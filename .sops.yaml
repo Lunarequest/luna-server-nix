@@ -1,0 +1,9 @@
+keys:
+  - &admin_luna age1mh724k6ue7gle9x4ztz39xaxp4gymeyvh78mg4dcjs4l4p38ag2q2yv6xv
+  - &server_yuzu age1p3qqx2vksjsz7s54aar9meg9mhg2sgvh6tcv224xlwtlq9hnl3eslzz934
+creation_rules:
+  - path_regex: hosts/yuzu/[^/]+\.(yaml|json|env|ini)$
+    key_groups:
+      - age:
+          - *admin_luna
+          - *server_yuzu
