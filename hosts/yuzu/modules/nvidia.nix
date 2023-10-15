@@ -1,9 +1,4 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}: {
+{config, ...}: {
   nixpkgs.config.allowUnfree = true;
   hardware = {
     nvidia = {

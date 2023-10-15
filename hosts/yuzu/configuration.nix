@@ -1,16 +1,15 @@
 {
   config,
-  lib,
   pkgs,
   inputs,
-  sops-nix,
   ...
 }: {
   imports = [
     # Include the results of the hardware scan.
-    ./hardware-configuration.nix
-    ./nvidia.nix
-    ./media.nix
+    ./modules/hardware-configuration.nix
+    ./modules/nvidia.nix
+    ./modules/media.nix
+    ./modules/printer.nix
     ../common/qbittorrent.nix
     inputs.sops-nix.nixosModules.sops
     inputs.cloudflared.nixosModules.cloudflared
@@ -72,7 +71,6 @@
     ];
     packages = with pkgs; [
       tree
-      pkgs.cloudflared
     ];
   };
   users.users.root.openssh.authorizedKeys.keys = [
@@ -125,8 +123,8 @@
   };
 
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [111 2049 4000 4001 4002 20048 8096];
-  networking.firewall.allowedUDPPorts = [111 2049 4000 4001 4002 20048 1900 7359];
+  networking.firewall.allowedTCPPorts = [111 2049 4000 4001 4002 20048 8096 631];
+  networking.firewall.allowedUDPPorts = [111 2049 4000 4001 4002 20048 1900 7359 631];
 
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
