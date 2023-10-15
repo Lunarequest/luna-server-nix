@@ -26,7 +26,7 @@
     initrd = {
       availableKernelModules = ["xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod"];
       compressor = "zstd";
-      kernelModules = [];
+      kernelModules = ["tcp_bbr"];
     };
     kernelModules = ["kvm-amd"];
     extraModulePackages = [];
@@ -35,6 +35,7 @@
   nix = {
     package = pkgs.nixUnstable;
     settings = {auto-optimise-store = true;};
+    optimise.automatic = true;
     extraOptions = ''
       experimental-features = nix-command flakes
     '';
@@ -81,12 +82,13 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; let
-    uimods = pkgs.callPackage ../packages/vuetorrent.nix {};
+    vuetorrent = pkgs.callPackage ../packages/vuetorrent.nix {};
   in [
     neovim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
-    nv-codec-headers-12
-    uimods.vuetorrent
+    linuxPackages.nvidia_x11
+    nvidia-vaapi-driver
+    vuetorrent.vuetorrent
   ];
 
   swapDevices = [

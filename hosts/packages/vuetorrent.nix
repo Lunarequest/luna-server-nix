@@ -13,8 +13,7 @@
 
     installPhase = ''
       mkdir -p $out/share/vuetorrent
-        ls $src
-      	cp -r $src/public $out/share/vuetorrent
+      cp -r $src/public $out/share/vuetorrent
     '';
   };
 }

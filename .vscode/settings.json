@@ -2,11 +2,10 @@
     "nixEnvSelector.nixFile": "${workspaceRoot}/flake.nix",
     "nix.enableLanguageServer": true,
     "nix.serverPath": "nil",
-
     "nix.serverSettings": {
         "nil": {
             "formatting": {
-                "command" : ["nixpkgs-alejandra"]
+                "command" : ["nix", "fmt"]
             }
         }
     }
