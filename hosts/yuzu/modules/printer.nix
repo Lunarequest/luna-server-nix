@@ -4,8 +4,8 @@
     drivers = with pkgs; [epson-201401w];
     browsing = true;
     listenAddresses = ["*:631"];
-    allowFrom = [ "all" ];
-    defaultShared = true; 
+    allowFrom = ["all"];
+    defaultShared = true;
   };
   services.avahi = {
     enable = true; # runs the Avahi daemon

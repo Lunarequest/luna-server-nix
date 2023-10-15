@@ -10,6 +10,7 @@
     ./modules/nvidia.nix
     ./modules/media.nix
     ./modules/printer.nix
+    ./modules/samba.nix
     ../common/qbittorrent.nix
     inputs.sops-nix.nixosModules.sops
     inputs.cloudflared.nixosModules.cloudflared
@@ -98,14 +99,6 @@
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
   services.tailscale.enable = true;
-  services.rpcbind.enable = true;
-  services.nfs.server = {
-    enable = true;
-    exports = ''
-      /export        *(rw,fsid=0,no_subtree_check,no_all_squash,crossmnt)
-      /export/media  *(rw,nohide,insecure,no_subtree_check,no_all_squash,crossmnt)
-    '';
-  };
 
   services.cloudflared-flake = {
     enable = true;
@@ -123,8 +116,9 @@
   };
 
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [111 2049 4000 4001 4002 20048 8096 631];
-  networking.firewall.allowedUDPPorts = [111 2049 4000 4001 4002 20048 1900 7359 631];
+  networking.firewall.allowedTCPPorts = [5357 8096 631];
+  networking.firewall.allowedUDPPorts = [3702 1900 7359 631];
+  networking.firewall.allowPing = true;
 
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
