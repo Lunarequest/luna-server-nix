@@ -54,9 +54,15 @@
     };
   };
 
-  networking.hostName = "yuzu"; # Define your hostname.
-  # Pick only one of the below networking options.
+  networking = {
+    hostName = "yuzu"; # Define your hostname.
+    # Open ports in the firewall.
+    firewall.allowedTCPPorts = [5357 8096 631];
+    firewall.allowedUDPPorts = [3702 1900 7359 631];
+    firewall.allowPing = true;
+  };
 
+  # Pick only one of the below networking options.
   systemd.network.networks."10-wan" = {
     matchConfig.Name = "enp1s0";
     networkConfig = {
@@ -122,11 +128,6 @@
       group = "cloudflared";
     };
   };
-
-  # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [5357 8096 631];
-  networking.firewall.allowedUDPPorts = [3702 1900 7359 631];
-  networking.firewall.allowPing = true;
 
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
