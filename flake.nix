@@ -19,6 +19,10 @@
       url = "github:nix-community/lanzaboote";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    lunarfetch = {
+      url = "git+ssh://git@github.com/Lunarequest/lunarfetch.git";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {
@@ -28,6 +32,7 @@
     sops-nix,
     cloudflared,
     lanzaboote,
+    lunarfetch,
   }: let
     system = "x86_64-linux";
     pkgs = nixpkgs.legacyPackages.${system};

@@ -2,6 +2,7 @@
   config,
   pkgs,
   inputs,
+  lib,
   ...
 }: {
   imports = [
@@ -21,8 +22,13 @@
   boot = {
     bootspec.enable = true;
     loader = {
-      systemd-boot.enable = true;
+      systemd-boot.enable = lib.mkForce false;
       efi.canTouchEfiVariables = true;
+    };
+    lanzaboote = {
+      enable = true;
+      pkiBundle = "/etc/secureboot";
+      configurationLimit = 2;
     };
     tmp.useTmpfs = true;
     initrd = {
@@ -88,6 +94,7 @@
     wget
     linuxPackages.nvidia_x11
     neofetch
+    inputs.lunarfetch.packages."x86_64-linux".default
   ];
 
   swapDevices = [
