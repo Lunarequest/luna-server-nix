@@ -1,6 +1,8 @@
-{ config, lib, ... }:
-
 {
+  config,
+  lib,
+  ...
+}: {
   ## System security tweaks
   # Prevent replacing the running kernel w/o reboot
   security.protectKernelImage = true;
@@ -15,7 +17,10 @@
   };
   # Fix a security hole in place for backwards compatibility. See desc in
   # nixpkgs/nixos/modules/system/boot/loader/systemd-boot/systemd-boot.nix
-  boot.loader.systemd-boot.editor = if config.boot.loader.enable then false else null;
+  boot.loader.systemd-boot.editor =
+    if config.boot.loader.enable
+    then false
+    else null;
 
   systemd.coredump.enable = false;
 
@@ -65,5 +70,4 @@
     polkit.enable = true;
     rtkit.enable = true;
   };
-
 }

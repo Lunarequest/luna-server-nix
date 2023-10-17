@@ -15,6 +15,10 @@
       url = "github:piperswe/nix-cloudflared";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {
@@ -23,6 +27,7 @@
     deploy-rs,
     sops-nix,
     cloudflared,
+    lanzaboote,
   }: let
     system = "x86_64-linux";
     pkgs = nixpkgs.legacyPackages.${system};

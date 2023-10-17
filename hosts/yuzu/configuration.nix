@@ -14,10 +14,12 @@
     ../common/qbittorrent.nix
     inputs.sops-nix.nixosModules.sops
     inputs.cloudflared.nixosModules.cloudflared
+    inputs.lanzaboote.nixosModules.lanzaboote
   ];
 
   # Use the systemd-boot EFI boot loader.
   boot = {
+    bootspec.enable = true;
     loader = {
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
@@ -81,14 +83,11 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; let
-    vuetorrent = pkgs.callPackage ../packages/vuetorrent.nix {};
-  in [
+  environment.systemPackages = with pkgs; [
     neovim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
     linuxPackages.nvidia_x11
-    nvidia-vaapi-driver
-    vuetorrent.vuetorrent
+    neofetch
   ];
 
   swapDevices = [
