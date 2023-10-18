@@ -100,7 +100,7 @@
     wget
     linuxPackages.nvidia_x11
     neofetch
-    inputs.lunarfetch.packages."x86_64-linux".default
+    inputs.lunarfetch.packages.x86_64-linux.default
   ];
 
   swapDevices = [
