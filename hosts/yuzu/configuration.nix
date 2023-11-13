@@ -12,6 +12,7 @@
     ./modules/media.nix
     ./modules/printer.nix
     ./modules/samba.nix
+    ./modules/git.nix
     ../common/qbittorrent.nix
     inputs.sops-nix.nixosModules.sops
     inputs.cloudflared.nixosModules.cloudflared
@@ -56,10 +57,21 @@
 
   networking = {
     hostName = "yuzu"; # Define your hostname.
+    nameservers = ["1.1.1.1#one.one.one.one" "1.0.0.1#one.one.one.one"];
+
     # Open ports in the firewall.
     firewall.allowedTCPPorts = [5357 8096 631];
     firewall.allowedUDPPorts = [3702 1900 7359 631];
     firewall.allowPing = true;
+  };
+  services.resolved = {
+    enable = true;
+    dnssec = "true";
+    domains = ["~."];
+    fallbackDns = ["1.1.1.1#one.one.one.one" "1.0.0.1#one.one.one.one"];
+    extraConfig = ''
+      DNSOverTLS=yes
+    '';
   };
 
   # Pick only one of the below networking options.
@@ -126,6 +138,12 @@
       mode = "0440";
       owner = "cloudflared";
       group = "cloudflared";
+    };
+    secrets."forgejo_dbpass" = {
+      owner = "${config.services.forgejo.user}";
+    };
+    secrets."forgejo_runner" = {
+      mode = "0444";
     };
   };
 

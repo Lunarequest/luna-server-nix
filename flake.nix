@@ -64,7 +64,7 @@
     deploy.nodes = {
       yuzu = {
         sshUser = "root";
-        hostname = "192.168.1.15";
+        hostname = "100.88.197.54";
         profiles = {
           system = {
             user = "root";
