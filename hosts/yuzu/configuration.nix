@@ -14,6 +14,7 @@
     ./modules/samba.nix
     ./modules/git.nix
     ../common/qbittorrent.nix
+    ../containers/navidrome.nix
     inputs.sops-nix.nixosModules.sops
     inputs.cloudflared.nixosModules.cloudflared
     inputs.lanzaboote.nixosModules.lanzaboote
