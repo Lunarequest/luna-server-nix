@@ -228,11 +228,11 @@
         "rust-overlay": "rust-overlay_2"
       },
       "locked": {
-        "lastModified": 1699884145,
-        "narHash": "sha256-bHSK1P5t1hNnj6fICnOh6QDZ1UHiwoEe5TRgHHGUX/g=",
+        "lastModified": 1700563640,
+        "narHash": "sha256-9bm7QCIWJYAs/X9QogL/DL49Avgfw2A7nP/I9cX0lrc=",
         "ref": "refs/heads/mistress",
-        "rev": "ffee1a13f2c3ebe63a4da785c328b02d5b8ad99b",
-        "revCount": 24,
+        "rev": "0e0ef254abc50e590a9a6a44b0dfa38f1e7b15a5",
+        "revCount": 25,
         "type": "git",
         "url": "ssh://git@github.com/Lunarequest/lunarfetch.git"
       },
