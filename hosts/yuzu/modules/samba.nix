@@ -2,7 +2,7 @@
   services.samba-wsdd = {
     enable = true;
     openFirewall = true;
-    interface = "eth0";
+    interface = "eth0 tailscale0";
     hostname = "yuzu";
     discovery = true;
   };

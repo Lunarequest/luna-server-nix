@@ -3,24 +3,14 @@
   pkgs,
   ...
 }: {
-  virtualisation = {
-    podman = {
-      enable = true;
-
-      # Create a `docker` alias for podman, to use it as a drop-in replacement
-      dockerCompat = true;
-
-      # Required for containers under podman-compose to be able to talk to each other.
-      defaultNetwork.settings.dns_enabled = true;
-    };
-  };
+  virtualisation.docker.enable = true;
 
   services.postgresql = {
     ensureDatabases = [config.services.forgejo.user];
     ensureUsers = [
       {
         name = config.services.forgejo.database.user;
-        ensurePermissions."DATABASE ${config.services.forgejo.database.name}" = "ALL PRIVILEGES";
+        ensureDBOwnership = true;
       }
     ];
   };
@@ -64,7 +54,10 @@
         runner = {
           capacity = 1;
           cache.enable = true;
-          container.privileged = true;
+        };
+        container = {
+          privileged = true;
+          network = "host";
         };
       };
     };
