@@ -15,10 +15,13 @@
     ./modules/git.nix
     ../common/qbittorrent.nix
     ../containers/navidrome.nix
+    ../containers/netboot.nix
     inputs.sops-nix.nixosModules.sops
     inputs.cloudflared.nixosModules.cloudflared
     inputs.lanzaboote.nixosModules.lanzaboote
   ];
+
+  virtualisation.oci-containers.backend = "docker";
 
   # Use the systemd-boot EFI boot loader.
   boot = {
@@ -61,8 +64,8 @@
     nameservers = ["1.1.1.1#one.one.one.one" "1.0.0.1#one.one.one.one"];
 
     # Open ports in the firewall.
-    firewall.allowedTCPPorts = [5357 8096 631];
-    firewall.allowedUDPPorts = [3702 1900 7359 631];
+    firewall.allowedTCPPorts = [80 443 5357 8096 631 3000 8080];
+    firewall.allowedUDPPorts = [3702 1900 7359 631 3000 8080 69];
     firewall.allowPing = true;
   };
   services.resolved = {

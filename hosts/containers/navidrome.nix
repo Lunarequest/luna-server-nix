@@ -1,7 +1,7 @@
 {...}: {
   virtualisation.oci-containers.containers."navidrome" = {
     autoStart = true;
-    image = "deluan/navidrome:latest";
+    image = "docker.io/deluan/navidrome:latest";
     #user: 1000:1000 # should be owner of volumes
     ports = ["4533:4533"];
     environment = {
@@ -15,5 +15,8 @@
       "/srv/containers/Navidrome/data:/data"
       "/media/nfs/Music:/music:ro"
     ];
+    labels = {
+      "io.containers.autoupdate"="registry";
+    };
   };
 }
