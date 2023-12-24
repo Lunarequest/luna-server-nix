@@ -43,8 +43,9 @@
       url = "https://git.nullrequest.com";
       name = "lunas runner";
       enable = true;
-      tokenFile = config.sops.secrets."forgejo_runner".path;
+      token = "Aqqvtm97m3CK88HZadxwqJ64xCrLREWUVQoIPdV2";
       labels = [
+        "docker:docker://catthehacker/ubuntu:act-latest"
         "debian-latest:docker://node:20-bookworm"
         "ubuntu-latest:docker://node:20-bookworm"
         "alpine-latest:docker://node:current-alpine"

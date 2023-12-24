@@ -13,6 +13,7 @@
     ./modules/printer.nix
     ./modules/samba.nix
     ./modules/git.nix
+    ../containers/grocy.nix
     ../common/qbittorrent.nix
     ../containers/navidrome.nix
     ../containers/netboot.nix
@@ -116,6 +117,8 @@
     wget
     linuxPackages.nvidia_x11
     neofetch
+    screen
+    unzip
     inputs.lunarfetch.packages.x86_64-linux.default
   ];
 
@@ -129,6 +132,11 @@
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
   services.tailscale.enable = true;
+
+  services.clamav = {
+    daemon.enable = true;
+    updater.enable = true;
+  };
 
   services.cloudflared-flake = {
     enable = true;

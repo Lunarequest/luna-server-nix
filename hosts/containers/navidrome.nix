@@ -9,14 +9,14 @@
       ND_SCANSCHEDULE = "1h";
       ND_LOGLEVEL = "info";
       ND_SESSIONTIMEOUT = "24h";
-      ND_BASEURL = "";
+      ND_BASEURL = "https://navidrome.nullrequest.com";
     };
     volumes = [
       "/srv/containers/Navidrome/data:/data"
       "/media/nfs/Music:/music:ro"
     ];
     labels = {
-      "io.containers.autoupdate"="registry";
+      "io.containers.autoupdate" = "registry";
     };
   };
 }

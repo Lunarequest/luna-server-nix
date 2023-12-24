@@ -17,7 +17,7 @@
       "/srv/containers/Navidrome/assets:/assets"
     ];
     labels = {
-      "io.containers.autoupdate"="registry";
+      "io.containers.autoupdate" = "registry";
     };
   };
 }

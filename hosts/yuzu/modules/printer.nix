@@ -9,7 +9,8 @@
   };
   services.avahi = {
     enable = true; # runs the Avahi daemon
-    nssmdns = true; # enables the mDNS NSS plug-in
+    nssmdns4 = true; # enables the mDNS NSS plug-in
+    nssmdns6 = true;
     openFirewall = true; # opens the firewall for UDP port 5353
     publish = {
       enable = true;
