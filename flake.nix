@@ -42,6 +42,7 @@
     cloudflared,
     lanzaboote,
     lunarfetch,
+    lix,
     lix-module
   }: let
     system = "x86_64-linux";
@@ -54,6 +55,7 @@
         niv
         nil
         zstd
+        nil
         colmena.packages.${system}.colmena
         sops-nix.packages.${system}.default
       ];

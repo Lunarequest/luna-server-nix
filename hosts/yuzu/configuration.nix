@@ -26,7 +26,7 @@
   ##### Colmena Configuration #####
   deployment = {
     targetUser = "root";
-    targetHost = "100.89.90.48";
+    targetHost = "192.168.1.15";
     targetPort = 22;
     tags = ["x86_64" "infra=heavy"];
   };
