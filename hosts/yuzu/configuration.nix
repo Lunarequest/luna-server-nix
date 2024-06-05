@@ -20,7 +20,17 @@
     inputs.sops-nix.nixosModules.sops
     inputs.cloudflared.nixosModules.cloudflared
     inputs.lanzaboote.nixosModules.lanzaboote
+    inputs.lix-module.nixosModules.default
   ];
+
+  ##### Colmena Configuration #####
+  deployment = {
+    targetUser = "root";
+    targetHost = "100.89.90.48";
+    targetPort = 22;
+    tags = ["x86_64" "infra=heavy"];
+  };
+  ##### Colmena Configuration #####
 
   virtualisation.oci-containers.backend = "docker";
 
@@ -47,8 +57,15 @@
   };
 
   nix = {
-    package = pkgs.nixUnstable;
-    settings = {auto-optimise-store = true;};
+    settings = {
+      auto-optimise-store = true;
+      extra-substituters = [
+        "https://cache.lix.systems"
+      ];
+      trusted-public-keys = [
+        "cache.lix.systems:aBnZUw8zA7H35Cz2RyKFVs3H4PlGTLawyY5KRbvJR8o="
+      ];
+    };
     optimise.automatic = true;
     extraOptions = ''
       experimental-features = nix-command flakes

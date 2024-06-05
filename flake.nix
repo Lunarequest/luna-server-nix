@@ -3,8 +3,8 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    deploy-rs = {
-      url = "github:serokell/deploy-rs";
+    colmena = {
+      url = "github:zhaofengli/colmena";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     sops-nix = {
@@ -23,16 +23,26 @@
       url = "git+ssh://git@github.com/Lunarequest/lunarfetch.git";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    lix = {
+      url = "git+https://git.lix.systems/lix-project/lix?ref=refs/tags/2.90-beta.1";
+      flake = false;
+    };
+    lix-module = {
+      url = "git+https://git.lix.systems/lix-project/nixos-module";
+      inputs.lix.follows = "lix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {
     self,
     nixpkgs,
-    deploy-rs,
+    colmena,
     sops-nix,
     cloudflared,
     lanzaboote,
     lunarfetch,
+    lix-module
   }: let
     system = "x86_64-linux";
     pkgs = nixpkgs.legacyPackages.${system};
@@ -44,38 +54,25 @@
         niv
         nil
         zstd
-        deploy-rs.packages.${system}.default
+        colmena.packages.${system}.colmena
         sops-nix.packages.${system}.default
       ];
       shellHook = ''
         test ~/.zshrc && exec zsh
       '';
     };
-
-    nixosConfigurations = {
-      yuzu = nixpkgs.lib.nixosSystem {
-        system = system;
+    colmena = {
+      meta = {
+        nixpkgs = import nixpkgs {
+          system = "x86_64-linux";
+          overlays = [];
+        };
         specialArgs = {
           inherit inputs;
         };
-        modules = [./hosts/yuzu/configuration.nix];
       };
+
+      yuzu = ./hosts/yuzu/configuration.nix;
     };
-    deploy.nodes = {
-      yuzu = {
-        sshUser = "root";
-        hostname = "100.88.197.54";
-        profiles = {
-          system = {
-            user = "root";
-            path = deploy-rs.lib.${system}.activate.nixos self.nixosConfigurations.yuzu;
-          };
-        };
-      };
-    };
-    checks =
-      builtins.mapAttrs
-      (system: deployLib: deployLib.deployChecks self.deploy)
-      deploy-rs.lib;
   };
 }

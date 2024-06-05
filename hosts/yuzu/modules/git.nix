@@ -43,7 +43,7 @@
       url = "https://git.nullrequest.com";
       name = "lunas runner";
       enable = true;
-      token = "Aqqvtm97m3CK88HZadxwqJ64xCrLREWUVQoIPdV2";
+      token = "jV7y9pBi5afeR6aiahVQtZZ9dya0pqRuGm5NlSnp";
       labels = [
         "docker:docker://catthehacker/ubuntu:act-latest"
         "debian-latest:docker://node:20-bookworm"
