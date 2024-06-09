@@ -43,7 +43,7 @@
     lanzaboote,
     lunarfetch,
     lix,
-    lix-module
+    lix-module,
   }: let
     system = "x86_64-linux";
     pkgs = nixpkgs.legacyPackages.${system};
@@ -75,6 +75,7 @@
       };
 
       yuzu = ./hosts/yuzu/configuration.nix;
+      tingyun = ./hosts/tingyun/configuration.nix;
     };
   };
 }

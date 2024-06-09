@@ -1,10 +1,9 @@
 {
-    "nixEnvSelector.nixFile": "${workspaceRoot}/flake.nix",
+    "nixEnvSelector.nixFile": "${workspaceFolder}/flake.nix",
     "nix.enableLanguageServer": true,
     "nix.serverPath": "nil",
     "nix.serverSettings": {
         "nil": {
         }
     },
-    "sqltools.useNodeRuntime": true
 }

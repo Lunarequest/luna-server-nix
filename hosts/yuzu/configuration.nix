@@ -28,7 +28,7 @@
     targetUser = "root";
     targetHost = "192.168.1.15";
     targetPort = 22;
-    tags = ["x86_64" "infra=heavy"];
+    tags = ["x86_64" "infra-heavy"];
   };
   ##### Colmena Configuration #####
 
@@ -36,6 +36,7 @@
 
   # Use the systemd-boot EFI boot loader.
   boot = {
+    kernelPackages = pkgs.linuxPackages_latest;
     bootspec.enable = true;
     loader = {
       systemd-boot.enable = lib.mkForce false;
@@ -52,7 +53,8 @@
       compressor = "zstd";
       kernelModules = ["tcp_bbr"];
     };
-    kernelModules = ["kvm-amd"];
+    kernelModules = ["kvm-amd" "nvidia" "nvidia-drm" "nvidia-uvm"];
+    kernelParams = ["nvidia_drm.modeset=1"];
     extraModulePackages = [];
   };
 
@@ -136,7 +138,7 @@
     neofetch
     screen
     unzip
-    inputs.lunarfetch.packages.x86_64-linux.default
+    inputs.lunarfetch.packages.${system}.default
   ];
 
   swapDevices = [
@@ -149,6 +151,7 @@
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
   services.tailscale.enable = true;
+  services.dbus.implementation = "broker";
 
   services.clamav = {
     daemon.enable = true;

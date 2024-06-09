@@ -7,23 +7,17 @@
   # Prevent replacing the running kernel w/o reboot
   security.protectKernelImage = true;
 
-  boot = {
+  boot.tmp = {
     # tmpfs = /tmp is mounted in ram. Doing so makes temp file management speedy
     # on ssd systems, and volatile! Because it's wiped on reboot.
-    tmp.useTmpfs = true;
+    useTmpfs = true;
     # If not using tmpfs, which is naturally purged on reboot, we must clean it
     # /tmp ourselves. /tmp should be volatile storage!
-    boot.cleanTmpDir = lib.mkDefault (!config.boot.tmpOnTmpfs);
+    cleanOnBoot = lib.mkDefault (!config.boot.tmp.useTmpfs);
   };
-  # Fix a security hole in place for backwards compatibility. See desc in
-  # nixpkgs/nixos/modules/system/boot/loader/systemd-boot/systemd-boot.nix
-  boot.loader.systemd-boot.editor =
-    if config.boot.loader.enable
-    then false
-    else null;
 
   systemd.coredump.enable = false;
-
+  services.dbus.implementation = "broker";
   boot.kernel.sysctl = {
     # The Magic SysRq key is a key combo that allows users connected to the
     # system console of a Linux kernel to perform some low-level commands.
