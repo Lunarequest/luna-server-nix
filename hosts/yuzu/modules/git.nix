@@ -46,8 +46,8 @@
       token = "jV7y9pBi5afeR6aiahVQtZZ9dya0pqRuGm5NlSnp";
       labels = [
         "docker:docker://catthehacker/ubuntu:act-latest"
-        "debian-latest:docker://node:20-bookworm"
-        "ubuntu-latest:docker://node:20-bookworm"
+        "debian-latest:docker://node:22-bookworm"
+        "ubuntu-latest:docker://node:22-bookworm"
         "alpine-latest:docker://node:current-alpine"
       ];
       settings = {

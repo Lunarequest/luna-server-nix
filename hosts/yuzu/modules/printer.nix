@@ -1,7 +1,7 @@
 {pkgs, ...}: {
   services.printing = {
     enable = true; # enables printing support via the CUPS daemon
-    drivers = with pkgs; [epson-201401w];
+    drivers = with pkgs; [];
     browsing = true;
     listenAddresses = ["*:631"];
     allowFrom = ["all"];

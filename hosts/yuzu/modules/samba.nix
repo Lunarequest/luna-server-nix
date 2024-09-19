@@ -10,25 +10,22 @@
     enable = true;
     package = pkgs.sambaFull;
     openFirewall = true;
-    securityType = "user";
-    extraConfig = ''
-      workgroup = WORKGROUP
-      server string = yuzu
-      netbios name = yuzu
-      security = user
-      #use sendfile = yes
-      #max protocol = smb2
-      # note: localhost is the ipv6 localhost ::1
-      hosts allow = 192.168.1. 127.0.0.1 100.110.13.97 100.127.121.93 localhost
-      hosts deny = 0.0.0.0/0
-      guest account = nobody
-      map to guest = bad user
-      load printers = yes
-      printing = cups
-      printcap name = cups
-
-    '';
-    shares = {
+    settings = {
+      global = {
+        security = "user";
+        "server string" = "yuzu";
+        "netbios name" = "yuzu";
+        #use sendfile = yes
+        #max protocol = smb2
+        # note: localhost is the ipv6 localhost ::1
+        "hosts allow" = "192.168.1. 127.0.0.1 100.110.13.97 100.127.121.93 localhost";
+        "hosts deny" = "0.0.0.0/0";
+        "guest account" = "nobody";
+        "map to guest" = "bad user";
+        "load printers" = "yes";
+        "printing" = "cups";
+        "printcap name" = "cups";
+      };
       public = {
         path = "/export/Public";
         browseable = "yes";
@@ -54,14 +51,14 @@
         path = "/var/spool/samba";
         public = "yes";
         browseable = "yes";
-        # to allow user 'guest account' to print.
         "guest ok" = "yes";
         writable = "no";
         printable = "yes";
-        "create mode" = 0700;
+        "create mode" = "0700";
       };
     };
   };
+
   systemd.tmpfiles.rules = [
     "d /var/spool/samba 1777 root root -"
   ];

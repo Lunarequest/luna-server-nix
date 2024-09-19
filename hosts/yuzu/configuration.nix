@@ -13,20 +13,19 @@
     ./modules/printer.nix
     ./modules/samba.nix
     ./modules/git.nix
-    ../containers/grocy.nix
     ../common/qbittorrent.nix
     ../containers/navidrome.nix
     ../containers/netboot.nix
+    ../containers/watchyourlan.nix
     inputs.sops-nix.nixosModules.sops
     inputs.cloudflared.nixosModules.cloudflared
     inputs.lanzaboote.nixosModules.lanzaboote
-    inputs.lix-module.nixosModules.default
   ];
 
   ##### Colmena Configuration #####
   deployment = {
     targetUser = "root";
-    targetHost = "192.168.1.15";
+    targetHost = "192.168.1.124";
     targetPort = 22;
     tags = ["x86_64" "infra-heavy"];
   };
@@ -59,15 +58,7 @@
   };
 
   nix = {
-    settings = {
-      auto-optimise-store = true;
-      extra-substituters = [
-        "https://cache.lix.systems"
-      ];
-      trusted-public-keys = [
-        "cache.lix.systems:aBnZUw8zA7H35Cz2RyKFVs3H4PlGTLawyY5KRbvJR8o="
-      ];
-    };
+    settings.auto-optimise-store = true;
     optimise.automatic = true;
     extraOptions = ''
       experimental-features = nix-command flakes
@@ -77,6 +68,7 @@
       dates = "weekly";
       options = "--delete-older-than 10d";
     };
+    package = pkgs.nix;
   };
 
   networking = {
@@ -84,19 +76,18 @@
     nameservers = ["1.1.1.1#one.one.one.one" "1.0.0.1#one.one.one.one"];
 
     # Open ports in the firewall.
-    firewall.allowedTCPPorts = [80 443 5357 8096 631 3000 8080];
-    firewall.allowedUDPPorts = [3702 1900 7359 631 3000 8080 69];
+    firewall.allowedTCPPorts = [80 443 5357 8096 631 3000 8080 8840];
+    firewall.allowedUDPPorts = [3702 1900 7359 631 3000 8080 69 8840];
     firewall.allowPing = true;
   };
   services.resolved = {
     enable = true;
-    dnssec = "true";
-    domains = ["~."];
+    domains = [];
+    llmnr = "resolve";
     fallbackDns = ["1.1.1.1#one.one.one.one" "1.0.0.1#one.one.one.one"];
-    extraConfig = ''
-      DNSOverTLS=yes
-    '';
   };
+
+
 
   # Pick only one of the below networking options.
   systemd.network.networks."10-wan" = {

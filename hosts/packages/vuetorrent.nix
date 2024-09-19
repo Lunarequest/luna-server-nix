@@ -4,7 +4,7 @@
 }: {
   vuetorrent = stdenv.mkDerivation rec {
     pname = "vuetorrent";
-    version = "2.4.0";
+    version = "2.10.2";
     dontBuild = true;
     src = fetchzip {
       url = "https://github.com/WDaan/VueTorrent/releases/download/v${version}/vuetorrent.zip";

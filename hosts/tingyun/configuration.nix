@@ -11,7 +11,6 @@
     ./hardware-configuration.nix
     ../common/security.nix
     inputs.lanzaboote.nixosModules.lanzaboote
-    #inputs.lix-module.nixosModules.default
   ];
 
   ##### Colmena Configuration #####
@@ -27,9 +26,28 @@
   # Use the systemd-boot EFI boot loader.
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
+    tmp.useTmpfs = true;
     loader = {
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
+    };
+    initrd = {
+      availableKernelModules = ["xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod"];
+      compressor = "zstd";
+      kernelModules = ["tcp_bbr"];
+    };
+  };
+  nix = {
+    package = pkgs.nix;
+    settings.auto-optimise-store = true;
+    optimise.automatic = true;
+    extraOptions = ''
+      experimental-features = nix-command flakes
+    '';
+    gc = {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 10d";
     };
   };
   networking.hostName = "tingyun"; # Define your hostname.
