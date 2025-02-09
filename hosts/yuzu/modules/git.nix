@@ -17,12 +17,17 @@
 
   services.forgejo = {
     enable = true;
+    package = pkgs.forgejo;
     database = {
       type = "postgres";
       passwordFile = config.sops.secrets."forgejo_dbpass".path;
     };
     settings = {
-      DEFAULT.APP_NAME = "Forgejo: Beyond coding. We gay.";
+      DEFAULT.APP_NAME = "Forgegay: Beyond coding. We gay.";
+      ui = {
+        DEFAULT_THEME = "bthree-dark";
+        THEMES = "bthree-dark,arc-blue,forgejo-auto,forgejo-light,forgejo-dark,gitea-auto,gitea-light,gitea-dark,forgejo-auto-deuteranopia-protanopia,forgejo-light-deuteranopia-protanopia,forgejo-dark-deuteranopia-protanopia,forgejo-auto-tritanopia,forgejo-light-tritanopia,forgejo-dark-tritanopia";
+      };
       service.DISABLE_REGISTRATION = true;
       actions = {
         ENABLED = true;

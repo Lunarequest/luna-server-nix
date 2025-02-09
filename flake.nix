@@ -10,7 +10,6 @@
     colmena = {
       url = "github:zhaofengli/colmena";
       inputs.nixpkgs.follows = "nixpkgs";
-      
     };
     sops-nix = {
       url = "github:Mic92/sops-nix";
@@ -46,6 +45,7 @@
     devShells.${system}.default = pkgs.mkShell {
       buildInputs = with pkgs; [
         zsh
+        nil
         zstd
         colmena.packages.${system}.colmena
         sops-nix.packages.${system}.default

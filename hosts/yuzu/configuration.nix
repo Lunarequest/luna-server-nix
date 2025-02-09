@@ -17,6 +17,8 @@
     ../containers/navidrome.nix
     ../containers/netboot.nix
     ../containers/watchyourlan.nix
+    ../containers/ntfy.nix
+    ./modules/soju.nix
     inputs.sops-nix.nixosModules.sops
     inputs.cloudflared.nixosModules.cloudflared
     inputs.lanzaboote.nixosModules.lanzaboote
@@ -35,7 +37,7 @@
 
   # Use the systemd-boot EFI boot loader.
   boot = {
-    kernelPackages = pkgs.linuxPackages_latest;
+    #kernelPackages = pkgs.linuxPackages_latest;
     bootspec.enable = true;
     loader = {
       systemd-boot.enable = lib.mkForce false;
@@ -56,7 +58,6 @@
     kernelParams = ["nvidia_drm.modeset=1"];
     extraModulePackages = [];
   };
-
   nix = {
     settings.auto-optimise-store = true;
     optimise.automatic = true;
@@ -76,8 +77,8 @@
     nameservers = ["1.1.1.1#one.one.one.one" "1.0.0.1#one.one.one.one"];
 
     # Open ports in the firewall.
-    firewall.allowedTCPPorts = [80 443 5357 8096 631 3000 8080 8840];
-    firewall.allowedUDPPorts = [3702 1900 7359 631 3000 8080 69 8840];
+    firewall.allowedTCPPorts = [80 443 5357 8096 6697 631 3000 8080 8840];
+    firewall.allowedUDPPorts = [3702 1900 7359 631 3000 6697 8080 69 8840];
     firewall.allowPing = true;
   };
   services.resolved = {
@@ -86,8 +87,6 @@
     llmnr = "resolve";
     fallbackDns = ["1.1.1.1#one.one.one.one" "1.0.0.1#one.one.one.one"];
   };
-
-
 
   # Pick only one of the below networking options.
   systemd.network.networks."10-wan" = {
@@ -125,10 +124,14 @@
   environment.systemPackages = with pkgs; [
     neovim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
+    file
     linuxPackages.nvidia_x11
     neofetch
     screen
     unzip
+    git
+    git-lfs
+    pkgs.jellyfin-ffmpeg
     inputs.lunarfetch.packages.${system}.default
   ];
 

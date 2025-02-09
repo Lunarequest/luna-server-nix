@@ -24,6 +24,13 @@
     fsType = "xfs";
   };
 
+  fileSystems."/mnt" = {
+    device = "/dev/disk/by-uuid/69f4b7cb-31ec-4c13-bb3c-85b3a903f8ef";
+    fsType = "btrfs";
+    options = ["subvol=@"];
+  };
+
+
   fileSystems."/export/media" = {
     device = "/media/nfs";
     options = ["bind"];
