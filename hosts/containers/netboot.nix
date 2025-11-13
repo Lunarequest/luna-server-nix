@@ -12,10 +12,6 @@
       PGID = "1000";
       TS = "Etc/IN";
     };
-    volumes = [
-      "/srv/containers/Navidrome/config:/config"
-      "/srv/containers/Navidrome/assets:/assets"
-    ];
     labels = {
       "io.containers.autoupdate" = "registry";
     };

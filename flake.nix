@@ -23,10 +23,6 @@
       url = "github:nix-community/lanzaboote";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    lunarfetch = {
-      url = "git+ssh://git@github.com/Lunarequest/lunarfetch.git";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs = inputs @ {
@@ -36,7 +32,6 @@
     sops-nix,
     cloudflared,
     lanzaboote,
-    lunarfetch,
   }: let
     system = "x86_64-linux";
     pkgs = nixpkgs.legacyPackages.${system};
@@ -46,15 +41,17 @@
       buildInputs = with pkgs; [
         zsh
         nil
+        nixd
         zstd
         colmena.packages.${system}.colmena
         sops-nix.packages.${system}.default
+        nixfmt
       ];
       shellHook = ''
         test ~/.zshrc && exec zsh
       '';
     };
-    colmena = {
+    colmenaHive = colmena.lib.makeHive {
       meta = {
         nixpkgs = import nixpkgs {
           system = "x86_64-linux";

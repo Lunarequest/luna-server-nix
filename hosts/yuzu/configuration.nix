@@ -4,7 +4,8 @@
   inputs,
   lib,
   ...
-}: {
+}:
+{
   imports = [
     # Include the results of the hardware scan.
     ./modules/hardware-configuration.nix
@@ -13,11 +14,10 @@
     ./modules/printer.nix
     ./modules/samba.nix
     ./modules/git.nix
-    ../common/qbittorrent.nix
-    ../containers/navidrome.nix
+    ./modules/pg.nix
+    ./modules/collabora.nix
+    ../common/sysctls.nix
     ../containers/netboot.nix
-    ../containers/watchyourlan.nix
-    ../containers/ntfy.nix
     ./modules/soju.nix
     inputs.sops-nix.nixosModules.sops
     inputs.cloudflared.nixosModules.cloudflared
@@ -29,15 +29,22 @@
     targetUser = "root";
     targetHost = "192.168.1.124";
     targetPort = 22;
-    tags = ["x86_64" "infra-heavy"];
+    tags = [
+      "x86_64"
+      "infra-heavy"
+    ];
   };
   ##### Colmena Configuration #####
 
-  virtualisation.oci-containers.backend = "docker";
+  virtualisation.podman = {
+    enable = true;
+    dockerCompat = true;
+    autoPrune.enable = true;
+  };
 
   # Use the systemd-boot EFI boot loader.
   boot = {
-    #kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = pkgs.linuxPackages_latest;
     bootspec.enable = true;
     loader = {
       systemd-boot.enable = lib.mkForce false;
@@ -50,13 +57,24 @@
     };
     tmp.useTmpfs = true;
     initrd = {
-      availableKernelModules = ["xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod"];
+      availableKernelModules = [
+        "xhci_pci"
+        "ahci"
+        "usbhid"
+        "usb_storage"
+        "sd_mod"
+      ];
       compressor = "zstd";
-      kernelModules = ["tcp_bbr"];
+      kernelModules = [ "tcp_bbr" ];
     };
-    kernelModules = ["kvm-amd" "nvidia" "nvidia-drm" "nvidia-uvm"];
-    kernelParams = ["nvidia_drm.modeset=1"];
-    extraModulePackages = [];
+    kernelModules = [
+      "kvm-amd"
+      "nvidia"
+      "nvidia-drm"
+      "nvidia-uvm"
+    ];
+    kernelParams = [ "nvidia_drm.modeset=1" ];
+    extraModulePackages = [ ];
   };
   nix = {
     settings.auto-optimise-store = true;
@@ -74,18 +92,44 @@
 
   networking = {
     hostName = "yuzu"; # Define your hostname.
-    nameservers = ["1.1.1.1#one.one.one.one" "1.0.0.1#one.one.one.one"];
+    nameservers = [
+      "1.1.1.1#one.one.one.one"
+      "1.0.0.1#one.one.one.one"
+    ];
 
     # Open ports in the firewall.
-    firewall.allowedTCPPorts = [80 443 5357 8096 6697 631 3000 8080 8840];
-    firewall.allowedUDPPorts = [3702 1900 7359 631 3000 6697 8080 69 8840];
+    firewall.allowedTCPPorts = [
+      80
+      443
+      5357
+      8096
+      6697
+      631
+      3000
+      8080
+      8840
+    ];
+    firewall.allowedUDPPorts = [
+      3702
+      1900
+      7359
+      631
+      3000
+      6697
+      8080
+      69
+      8840
+    ];
     firewall.allowPing = true;
   };
   services.resolved = {
     enable = true;
-    domains = [];
+    domains = [ ];
     llmnr = "resolve";
-    fallbackDns = ["1.1.1.1#one.one.one.one" "1.0.0.1#one.one.one.one"];
+    fallbackDns = [
+      "1.1.1.1#one.one.one.one"
+      "1.0.0.1#one.one.one.one"
+    ];
   };
 
   # Pick only one of the below networking options.
@@ -107,7 +151,7 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.luna = {
     isNormalUser = true;
-    extraGroups = ["wheel"]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJmJ37s/9ASDgUuYNFytjH4Q54FM8E0SZZBOvxSep5ZP luna.dragon@suse.com"
     ];
@@ -132,7 +176,10 @@
     git
     git-lfs
     pkgs.jellyfin-ffmpeg
-    inputs.lunarfetch.packages.${system}.default
+    ghostty
+    polkit
+    docker-compose
+    rsync
   ];
 
   swapDevices = [
@@ -147,6 +194,11 @@
   services.tailscale.enable = true;
   services.dbus.implementation = "broker";
 
+  services.journald.extraConfig = "
+    SystemMaxUse=2G
+    SystemKeepFree=2.5G
+  ";
+
   services.clamav = {
     daemon.enable = true;
     updater.enable = true;
@@ -154,8 +206,13 @@
 
   services.cloudflared-flake = {
     enable = true;
-    tokenFile = "${config.sops.secrets.cloudflared.path}";
+    tokenFile = toString config.sops.secrets.cloudflared.path;
   };
+
+  systemd.services.cloudflared.serviceConfig.Environment = lib.mkForce [
+    "TUNNEL_TOKEN_FILE=${config.sops.secrets.cloudflared.path}"
+    "NO_AUTOUPDATE=true"
+  ];
 
   sops = {
     defaultSopsFile = ./secrets.json;
@@ -171,6 +228,7 @@
     secrets."forgejo_runner" = {
       mode = "0444";
     };
+    secrets."wg" = { };
   };
 
   # Or disable the firewall altogether.

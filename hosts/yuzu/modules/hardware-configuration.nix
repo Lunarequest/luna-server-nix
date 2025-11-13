@@ -30,7 +30,6 @@
     options = ["subvol=@"];
   };
 
-
   fileSystems."/export/media" = {
     device = "/media/nfs";
     options = ["bind"];
@@ -48,4 +47,5 @@
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   powerManagement.cpuFreqGovernor = lib.mkDefault "ondemand";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  hardware.nvidia-container-toolkit.enable = true;
 }

@@ -1,13 +1,23 @@
-{pkgs,config,...}: {
-    networking.wg-quick.interfaces = {
-        wg0 = {
-            address = ["10.0.0.1/24" "fdc9:281f:04d7:9ee9::1/64"];
-            listenPort = 51820;
-            privateKeyFile = "${config.sops.secrets.vpn.path}";
+{
+  pkgs,
+  config,
+  ...
+}: {
+  networking.wg-quick.interfaces = {
+    wg0 = {
+      address = ["10.65.233.103/32" "fc00:bbbb:bbbb:bb01::2:e966/128"];
+      listenPort = 51820;
+      privateKeyFile = "/run/secrets/wg";
+      dns = ["100.64.0.4"];
 
-            postUp = ''
-                ${pkgs.iptables}
-            '';
-        };
+      peers = [
+        {
+          publicKey = "bZQF7VRDRK/JUJ8L6EFzF/zRw2tsqMRk6FesGtTgsC0=";
+          allowedIPs = ["0.0.0.0/0" "::/0"];
+          endpoint = "138.199.43.91:51820";
+          persistentKeepalive = 25;
+        }
+      ];
     };
+  };
 }

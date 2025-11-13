@@ -2,11 +2,10 @@
   config,
   pkgs,
   ...
-}: {
-  virtualisation.docker.enable = true;
-
+}:
+{
   services.postgresql = {
-    ensureDatabases = [config.services.forgejo.user];
+    ensureDatabases = [ config.services.forgejo.user ];
     ensureUsers = [
       {
         name = config.services.forgejo.database.user;
@@ -43,13 +42,14 @@
     };
   };
   services.gitea-actions-runner = {
-    package = pkgs.forgejo-actions-runner;
+    package = pkgs.forgejo-runner;
     instances.lunas_runner = {
       url = "https://git.nullrequest.com";
       name = "lunas runner";
       enable = true;
-      token = "jV7y9pBi5afeR6aiahVQtZZ9dya0pqRuGm5NlSnp";
+      tokenFile = config.sops.secrets."forgejo_runner".path;
       labels = [
+        "baremetal:docker://catthehacker/ubuntu:act-latest"
         "docker:docker://catthehacker/ubuntu:act-latest"
         "debian-latest:docker://node:22-bookworm"
         "ubuntu-latest:docker://node:22-bookworm"

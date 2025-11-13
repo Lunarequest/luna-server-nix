@@ -4,8 +4,8 @@
   services.qbittorrent = {
     enable = true;
     openFirewall = true;
-    dataDir = "/srv/qbittorrent";
-    port = 5090;
+    profileDir = "/srv/qbittorrent";
+    webuiPort = 5090;
   };
 
   environment.etc."vuetorrent" = let

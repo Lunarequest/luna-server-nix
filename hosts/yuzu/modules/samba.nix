@@ -8,8 +8,7 @@
   };
   services.samba = {
     enable = true;
-    package = pkgs.sambaFull.override {
-      # Workaround for https://github.com/NixOS/nixpkgs/issues/359723
+    package = pkgs.samba4Full.override {
       enableCephFS = false;
     };
     openFirewall = true;
