@@ -18,7 +18,6 @@
     ./modules/collabora.nix
     ../common/sysctls.nix
     ../containers/netboot.nix
-    ./modules/soju.nix
     inputs.sops-nix.nixosModules.sops
     inputs.cloudflared.nixosModules.cloudflared
     inputs.lanzaboote.nixosModules.lanzaboote
@@ -77,7 +76,10 @@
     extraModulePackages = [ ];
   };
   nix = {
-    settings.auto-optimise-store = true;
+    settings = {
+      auto-optimise-store = true;
+      download-buffer-size = 524288000;
+    };
     optimise.automatic = true;
     extraOptions = ''
       experimental-features = nix-command flakes
@@ -124,12 +126,14 @@
   };
   services.resolved = {
     enable = true;
-    domains = [ ];
-    llmnr = "resolve";
-    fallbackDns = [
-      "1.1.1.1#one.one.one.one"
-      "1.0.0.1#one.one.one.one"
-    ];
+    settings.Resolve = {
+      Domains = [ ];
+      LLMNR = "resolve";
+      FallbackDNS = [
+        "1.1.1.1#one.one.one.one"
+        "1.0.0.1#one.one.one.one"
+      ];
+    };
   };
 
   # Pick only one of the below networking options.
@@ -170,7 +174,7 @@
     wget
     file
     linuxPackages.nvidia_x11
-    neofetch
+    hyfetch
     screen
     unzip
     git

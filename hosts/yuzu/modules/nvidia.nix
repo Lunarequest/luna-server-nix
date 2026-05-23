@@ -1,8 +1,9 @@
-{config, ...}: {
+{ config, ... }:
+{
   nixpkgs.config.allowUnfree = true;
   hardware = {
     nvidia = {
-      package = config.boot.kernelPackages.nvidiaPackages.stable;
+      package = config.boot.kernelPackages.nvidiaPackages.legacy_580;
       modesetting.enable = true;
       open = false;
     };
@@ -11,8 +12,8 @@
       enable32Bit = true;
     };
   };
-  services.xserver.videoDrivers = ["nvidia"];
+  services.xserver.videoDrivers = [ "nvidia" ];
 
-  boot.initrd.kernelModules = ["nvidia"];
-  boot.extraModulePackages = [config.boot.kernelPackages.nvidia_x11];
+  boot.initrd.kernelModules = [ "nvidia" ];
+  boot.extraModulePackages = [ ];
 }

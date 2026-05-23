@@ -14,6 +14,24 @@
     ];
   };
 
+  services.anubis = {
+    instances = {
+      forgejo = {
+        enable = true;
+        settings = {
+          DIFFICULTY = 5;
+          BIND = "127.0.0.1:3003";
+          BIND_NETWORK = "tcp";
+          METRICS_BIND = "127.0.0.1:6000";
+          METRICS_BIND_NETWORK = "tcp";
+          TARGET = "http://localhost:3001";
+          WEBMASTER_EMAIL = "luna@nullrequest.com";
+          SERVE_ROBOTS_TXT = true;
+        };
+      };
+    };
+  };
+
   services.forgejo = {
     enable = true;
     package = pkgs.forgejo;
@@ -23,10 +41,7 @@
     };
     settings = {
       DEFAULT.APP_NAME = "Forgegay: Beyond coding. We gay.";
-      ui = {
-        DEFAULT_THEME = "bthree-dark";
-        THEMES = "bthree-dark,arc-blue,forgejo-auto,forgejo-light,forgejo-dark,gitea-auto,gitea-light,gitea-dark,forgejo-auto-deuteranopia-protanopia,forgejo-light-deuteranopia-protanopia,forgejo-dark-deuteranopia-protanopia,forgejo-auto-tritanopia,forgejo-light-tritanopia,forgejo-dark-tritanopia";
-      };
+      ui = {};
       service.DISABLE_REGISTRATION = true;
       actions = {
         ENABLED = true;
@@ -46,13 +61,13 @@
     instances.lunas_runner = {
       url = "https://git.nullrequest.com";
       name = "lunas runner";
-      enable = true;
+      enable = false;
       tokenFile = config.sops.secrets."forgejo_runner".path;
       labels = [
-        "baremetal:docker://catthehacker/ubuntu:act-latest"
-        "docker:docker://catthehacker/ubuntu:act-latest"
-        "debian-latest:docker://node:22-bookworm"
-        "ubuntu-latest:docker://node:22-bookworm"
+        "baremetal:docker://ghcr.io/catthehacker/ubuntu:act-latest"
+        "docker:docker://ghcr.io/catthehacker/ubuntu:act-latest"
+        "debian-latest:docker://node:trixie"
+        "ubuntu-latest:docker://node:trixie"
         "alpine-latest:docker://node:current-alpine"
       ];
       settings = {
