@@ -2,10 +2,10 @@
   config,
   pkgs,
   ...
-}:
-{
+}: {
   services.postgresql = {
-    ensureDatabases = [ config.services.forgejo.user ];
+    package = pkgs.postgresql_18;
+    ensureDatabases = [config.services.forgejo.user];
     ensureUsers = [
       {
         name = config.services.forgejo.database.user;
@@ -13,7 +13,9 @@
       }
     ];
   };
-
+  systemd.services.anubis-forgejo.serviceConfig = {
+    ReadWritePaths = ["/var/lib/anubis"];
+  };
   services.anubis = {
     instances = {
       forgejo = {
@@ -27,6 +29,8 @@
           TARGET = "http://localhost:3001";
           WEBMASTER_EMAIL = "luna@nullrequest.com";
           SERVE_ROBOTS_TXT = true;
+          CUSTOM_REAL_IP_HEADER = "CF-Connecting-IP";
+          COOKIE_DOMAIN = "nullrequest.com";
         };
       };
     };

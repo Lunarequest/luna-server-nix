@@ -4,8 +4,7 @@
   inputs,
   lib,
   ...
-}:
-{
+}: {
   imports = [
     # Include the results of the hardware scan.
     ./modules/hardware-configuration.nix
@@ -44,7 +43,6 @@
   # Use the systemd-boot EFI boot loader.
   boot = {
     kernelPackages = pkgs.linuxPackages_latest;
-    bootspec.enable = true;
     loader = {
       systemd-boot.enable = lib.mkForce false;
       efi.canTouchEfiVariables = true;
@@ -64,7 +62,7 @@
         "sd_mod"
       ];
       compressor = "zstd";
-      kernelModules = [ "tcp_bbr" ];
+      kernelModules = ["tcp_bbr"];
     };
     kernelModules = [
       "kvm-amd"
@@ -72,8 +70,8 @@
       "nvidia-drm"
       "nvidia-uvm"
     ];
-    kernelParams = [ "nvidia_drm.modeset=1" ];
-    extraModulePackages = [ ];
+    kernelParams = ["nvidia_drm.modeset=1"];
+    extraModulePackages = [];
   };
   nix = {
     settings = {
@@ -127,7 +125,7 @@
   services.resolved = {
     enable = true;
     settings.Resolve = {
-      Domains = [ ];
+      Domains = [];
       LLMNR = "resolve";
       FallbackDNS = [
         "1.1.1.1#one.one.one.one"
@@ -155,7 +153,7 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.luna = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    extraGroups = ["wheel"]; # Enable ‘sudo’ for the user.
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJmJ37s/9ASDgUuYNFytjH4Q54FM8E0SZZBOvxSep5ZP luna.dragon@suse.com"
     ];
@@ -232,7 +230,7 @@
     secrets."forgejo_runner" = {
       mode = "0444";
     };
-    secrets."wg" = { };
+    secrets."wg" = {};
   };
 
   # Or disable the firewall altogether.

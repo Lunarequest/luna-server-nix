@@ -3,8 +3,7 @@
   lib,
   modulesPath,
   ...
-}:
-{
+}: {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
@@ -12,7 +11,7 @@
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/8e55cfec-0815-4fdd-b9a5-79af4f192191";
     fsType = "btrfs";
-    options = [ "subvol=@" ];
+    options = ["subvol=@"];
   };
 
   fileSystems."/boot" = {
@@ -28,16 +27,16 @@
   fileSystems."/mnt" = {
     device = "/dev/disk/by-uuid/69f4b7cb-31ec-4c13-bb3c-85b3a903f8ef";
     fsType = "btrfs";
-    options = [ "subvol=@" ];
+    options = ["subvol=@"];
   };
 
   fileSystems."/export/media" = {
     device = "/media/nfs";
-    options = [ "bind" ];
+    options = ["bind"];
     fsType = "none";
   };
 
-  swapDevices = [ ];
+  swapDevices = [];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's

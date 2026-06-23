@@ -4,11 +4,11 @@
 }: {
   vuetorrent = stdenv.mkDerivation rec {
     pname = "vuetorrent";
-    version = "2.30.1";
+    version = "2.34.0";
     dontBuild = true;
     src = fetchzip {
       url = "https://github.com/WDaan/VueTorrent/releases/download/v${version}/vuetorrent.zip";
-      sha256 = "1s7qi15gj5k2x6m3wnkl32c7mb9kdv7vrmmwm0vl45va8gfxzz6y";
+      sha256 = "1s90izqfjimwhi04y8q8j4sv6pxc59gxpwrchp4mw23cxphcvm1j";
     };
 
     installPhase = ''

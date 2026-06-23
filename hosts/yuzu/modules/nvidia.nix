@@ -1,5 +1,4 @@
-{ config, ... }:
-{
+{config, ...}: {
   nixpkgs.config.allowUnfree = true;
   hardware = {
     nvidia = {
@@ -12,8 +11,8 @@
       enable32Bit = true;
     };
   };
-  services.xserver.videoDrivers = [ "nvidia" ];
+  services.xserver.videoDrivers = ["nvidia"];
 
-  boot.initrd.kernelModules = [ "nvidia" ];
-  boot.extraModulePackages = [ ];
+  boot.initrd.kernelModules = ["nvidia"];
+  boot.extraModulePackages = [];
 }

@@ -2,6 +2,7 @@
   services.jellyfin.enable = true;
 
   services.qbittorrent = {
+    package = pkgs.qbittorrent-enhanced-nox;
     enable = true;
     openFirewall = true;
     profileDir = "/srv/qbittorrent";
